@@ -1,0 +1,18 @@
+{
+  "id": "foundry-controller",
+  "title": "Foundry Controller",
+  "description": "Controller support for foundry",
+  "authors": [
+    {
+      "name": "G0ldenT0ast"
+    }
+  ],
+  "esmodules": [
+    "src/main.js"
+  ],
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  }
+}

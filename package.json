@@ -1,0 +1,19 @@
+{
+  "name": "foundrycontroller",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
+    "prettier": "^3.3.1",
+    "typescript": "^5.2.2"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "bun bun.config.js",
+    "build": "gulp"
+  },
+  "type": "module",
+  "dependencies": {
+    "@takinabradley/copybunplugin": "^0.0.7"
+  }
+}
