@@ -14,6 +14,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^12.331.3-beta",
     "@takinabradley/copybunplugin": "^0.0.7"
   }
 }
