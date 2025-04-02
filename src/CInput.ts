@@ -1,5 +1,13 @@
 export class CInput {
 
+  get buttons(): GamepadButton[] {
+    return this._buttons;
+  }
+
+  set buttons(buttons: GamepadButton[]) {
+    this._buttons = buttons;
+  }
+
   get axes():number[] {
     const modAxes:number[] = []
     modAxes.push(...this.computeCoordinates(this._axes[0], this._axes[1]));
@@ -12,10 +20,11 @@ export class CInput {
   }
 
   private _axes: number[];
+  private _buttons: GamepadButton[];
 
 
-  private _deadzone:number
-  private _sensitivity:number
+  private _deadzone:number;
+  private _sensitivity:number;
   private _saturation: number;
   private _range: number;
 
@@ -25,7 +34,8 @@ export class CInput {
     this._sensitivity = sensitivity;
     this._saturation = saturation;
     this._range = range;
-    this._axes = []
+    this._axes = [];
+    this._buttons = [];
   }
 
   private computeCoordinates(x:number, y:number): number[] {
