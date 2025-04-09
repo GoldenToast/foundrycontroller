@@ -1,9 +1,9 @@
 import CopyBunPlugin from "@takinabradley/copybunplugin";
 import { watch } from "fs/promises";
-//import { rm } from "node:fs/promises";
 
-//const rootDir = 'C:\\Users\\sasch\\AppData\\Local\\FoundryVTT\\Data\\modules\\foundry-controller';
-const rootDir = '/Users/saschakowark/Library/Application Support/FoundryVTT/Data/modules/foundry-controller';
+
+const rootDir = `${process.env.LOCALAPPDATA}\\FoundryVTT\\Data\\modules\\foundry-controller`;
+//const rootDir = '/Users/saschakowark/Library/Application Support/FoundryVTT/Data/modules/foundry-controller';
 
 // Delete a directory and all its contents
 //await rm(rootDir, { recursive: true, force: true });

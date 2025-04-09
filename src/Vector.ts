@@ -12,7 +12,7 @@ export class Vector {
   }
 
   getDegree():number{
-    return (Math.atan2(this.x * -1, this.y) * 180) / Math.PI;
+    return ((Math.atan2(this.x * -1, this.y) * 180) / Math.PI)-180;
   }
 
   normalize() {

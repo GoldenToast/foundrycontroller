@@ -5,13 +5,19 @@ import { CUser } from '../CUser.ts';
 
 export class TokenMovementHandler extends BaseHandler {
 
+  private linkRotation: boolean = true;
   private snap: number = 15;
 
   handle(user:CUser) {
     const token = user.getSelectedToken()
     const input = user.input
     this.move(token, new Vector(input.axes[0], input.axes[1]))
-    this.rotate(token, new Vector(input.axes[2], input.axes[3]))
+    if (this.linkRotation){
+      this.rotate(token, new Vector(input.axes[0], input.axes[1]))
+    }else {
+      this.rotate(token, new Vector(input.axes[2], input.axes[3]))
+    }
+
     super.handle(user)
   }
 
