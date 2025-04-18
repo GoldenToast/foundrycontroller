@@ -29,7 +29,8 @@ Hooks.on("drawToken", function(token) {
   addUserToken(token);
 });
 
-Hooks.on("deactivateTokenLayer", function() {
+Hooks.on("preUpdateScene", function() {
+  console.log("preUpdateScene");
   clearUserTokens();
 });
 
@@ -60,7 +61,9 @@ function createUsers() {
 
 function updateUser(){
   users.forEach(user => {
-    user.userPosition = UserPosition.fromIndex(game.settings.get(NAMESPACE, user.id))
+    user.userPosition = UserPosition.fromIndex(game.settings.get(NAMESPACE, "pos_"+user.id))
+    const hue = game.settings.get(NAMESPACE, "col_"+user.id)
+    user.color = Color.fromHSV([hue/100, 1,1])
   })
 }
 
@@ -73,9 +76,12 @@ function clearUserTokens(){
 }
 
 function addUserSettingsUI(){
-  for (const userSetting of UserSettings.getUserSettingEntries(game["users"])) {
-    game.settings.register(NAMESPACE, userSetting.id, userSetting)
-  }
+  game["users"].forEach(user => {
+    const posSetting = UserSettings.getUserPositionSetting(user)
+    game.settings.register(NAMESPACE, posSetting.id, posSetting)
+    const colorSetting = UserSettings.getUserColorSetting(user)
+    game.settings.register(NAMESPACE, colorSetting.id, colorSetting)
+  })
 }
 
 

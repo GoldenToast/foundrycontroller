@@ -5,14 +5,20 @@ export class CUser {
   get id(): string {
     return this._id;
   }
-  get gamepadIndex(): number {
-    return this._gamepadIndex;
-  }
   get userPosition(): UserPosition {
     return this._userPosition;
   }
   set userPosition(userPosition: UserPosition) {
     this._userPosition = userPosition;
+  }
+  get gamepadIndex(): number {
+    return this._gamepadIndex;
+  }
+  get color(): number {
+    return this._color;
+  }
+  set color(value: Color) {
+    this._color = value;
   }
   get input(): CInput {
     return this._input;
@@ -21,6 +27,7 @@ export class CUser {
   private _id: string;
   private _userPosition:UserPosition;
   private _gamepadIndex:number;
+  private _color: Color
 
   private _input: CInput
   private _tokens: Token[]
@@ -31,6 +38,7 @@ export class CUser {
     this._gamepadIndex = gamepadIndex;
     this._input = userInput;
     this._userPosition = userPosition;
+    this._color = Color.fromRGBvalues(1,1,1)
     this._tokens = [];
     this.selectionIndex = 0
   }

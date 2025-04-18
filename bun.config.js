@@ -1,9 +1,13 @@
 import CopyBunPlugin from "@takinabradley/copybunplugin";
 import { watch } from "fs/promises";
 
-
-const rootDir = `${process.env.LOCALAPPDATA}\\FoundryVTT\\Data\\modules\\foundry-controller`;
-//const rootDir = '/Users/saschakowark/Library/Application Support/FoundryVTT/Data/modules/foundry-controller';
+let rootDir = ""
+if (process.platform === "darwin") {
+    rootDir = `${process.env.HOME}/Library/Application Support/FoundryVTT/Data/modules/foundry-controller`;
+}else{
+    rootDir = `${process.env.LOCALAPPDATA}\\FoundryVTT\\Data\\modules\\foundry-controller`;
+}
+console.log(`Build destination: ${rootDir}`)
 
 // Delete a directory and all its contents
 //await rm(rootDir, { recursive: true, force: true });
@@ -11,7 +15,7 @@ const watcher = watch(import.meta.dir,{ recursive: true });
 
 for await (const event of watcher) {
     console.log(`Detected ${event.eventType} in ${event.filename}`);
-    build().then(r => console.log("Build Done"))
+    build().then(r => console.log("Build Done" + r))
 }
 
 async function build() {
