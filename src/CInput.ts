@@ -4,8 +4,8 @@ export class CInput {
     return this._buttons;
   }
 
-  set buttons(buttons: GamepadButton[]) {
-    this._buttons = buttons;
+  set buttons(buttons: readonly GamepadButton[]) {
+    this._buttons = Array.from(buttons);
   }
 
   get axes():number[] {
@@ -15,18 +15,18 @@ export class CInput {
     return modAxes
   }
 
-  set axes(axes:number[]) {
-    this._axes = axes;
+  set axes(axes: readonly number[]) {
+    this._axes = Array.from(axes);
   }
 
   private _axes: number[];
   private _buttons: GamepadButton[];
 
 
-  private _deadzone:number;
-  private _sensitivity:number;
-  private _saturation: number;
-  private _range: number;
+  private readonly _deadzone:number;
+  private readonly _sensitivity:number;
+  private readonly _saturation: number;
+  private readonly _range: number;
 
   constructor(deadzone:number = .01, sensitivity:number = 0, saturation:number = 0, range:number = 1) {
 

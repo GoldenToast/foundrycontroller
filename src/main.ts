@@ -16,7 +16,7 @@ const userPositionHandler = new UserPositionHandler(tokenMovementHandler);
 const tokenSelectionHandler = new TokenSelectionHandler(userPositionHandler);
 
 //Internal user array
-let users = [];
+let users:CUser[] = [];
 
 Hooks.on("canvasInit", async function () {
   addUserSettingsUI()
@@ -25,12 +25,11 @@ Hooks.on("canvasInit", async function () {
   requestAnimationFrame(handleInput);
 });
 
-Hooks.on("drawToken", function(token) {
+Hooks.on("drawToken", function(token:Token) {
   addUserToken(token);
 });
 
 Hooks.on("preUpdateScene", function() {
-  console.log("preUpdateScene");
   clearUserTokens();
 });
 
@@ -53,7 +52,7 @@ function handleInput() {
 
 function createUsers() {
   let gamepadIndex = 0;
-  users = game["users"].map((user) => {
+  users = getFoundryUsers().map((user) => {
       return new CUser(user.id, gamepadIndex++, new CInput())
     }
   )
@@ -61,13 +60,18 @@ function createUsers() {
 
 function updateUser(){
   users.forEach(user => {
-    user.userPosition = UserPosition.fromIndex(game.settings.get(NAMESPACE, "pos_"+user.id))
-    const hue = game.settings.get(NAMESPACE, "col_"+user.id)
+    // @ts-ignore
+    user.userPosition = UserPosition.fromIndex(getFoundrySetting().get(NAMESPACE, "pos_"+user.id))
+    // @ts-ignore
+    user.gamepadIndex = getFoundrySetting().get(NAMESPACE, "padIndex_"+user.id)
+    // @ts-ignore
+    const hue = getFoundrySetting().get(NAMESPACE, "col_"+user.id)
+    // @ts-ignore
     user.color = Color.fromHSV([hue/100, 1,1])
   })
 }
 
-function addUserToken(token){
+function addUserToken(token:Token){
   users.forEach(user => {user.addOwnedToken(token)})
 }
 
@@ -76,12 +80,34 @@ function clearUserTokens(){
 }
 
 function addUserSettingsUI(){
-  game["users"].forEach(user => {
+  getFoundryUsers().forEach(user => {
+    // @ts-ignore
     const posSetting = UserSettings.getUserPositionSetting(user)
-    game.settings.register(NAMESPACE, posSetting.id, posSetting)
+    // @ts-ignore
+    getFoundrySetting().register(NAMESPACE, posSetting.id, posSetting)
+    // @ts-ignore
+    const gamepadSetting = UserSettings.getUserGampadIndex(user)
+    // @ts-ignore
+    getFoundrySetting().register(NAMESPACE, gamepadSetting.id, gamepadSetting)
+    // @ts-ignore
     const colorSetting = UserSettings.getUserColorSetting(user)
-    game.settings.register(NAMESPACE, colorSetting.id, colorSetting)
+    // @ts-ignore
+    getFoundrySetting().register(NAMESPACE, colorSetting.id, colorSetting)
   })
 }
 
+function getFoundryUsers(): Users{
+  const users =  game.users;
+  if(users){
+    return users;
+  }
+  throw new Error("No users found");
+}
 
+function getFoundrySetting():ClientSettings {
+    const settings =  game.settings;
+    if(settings){
+      return settings;
+    }
+    throw new Error("No user settings found");
+}

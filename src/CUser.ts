@@ -14,6 +14,9 @@ export class CUser {
   get gamepadIndex(): number {
     return this._gamepadIndex;
   }
+  set gamepadIndex(value: number) {
+    this._gamepadIndex = value;
+  }
   get color(): number {
     return this._color;
   }

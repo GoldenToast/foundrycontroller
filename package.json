@@ -5,7 +5,7 @@
     "@types/bun": "latest",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "prettier": "^3.3.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.5.3"
   },
   "private": true,
   "scripts": {

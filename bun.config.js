@@ -15,12 +15,12 @@ const watcher = watch(import.meta.dir,{ recursive: true });
 
 for await (const event of watcher) {
     console.log(`Detected ${event.eventType} in ${event.filename}`);
-    build().then(r => console.log("Build Done" + r))
+    build().then(r => console.log("Build Done"))
 }
 
 async function build() {
     await Bun.build({
-        entrypoints: ['./src/main.js'],
+        entrypoints: ['./src/main.ts'],
         outdir: rootDir + '/src',
         plugins: [CopyBunPlugin({
             patterns: [
