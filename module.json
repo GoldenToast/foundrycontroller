@@ -8,7 +8,7 @@
     }
   ],
   "esmodules": [
-    "src/main.js"
+    "main.js"
   ],
   "version": "0.1.0",
   "compatibility": {

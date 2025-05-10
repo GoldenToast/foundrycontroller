@@ -54,7 +54,6 @@ function createUsers() {
   let gamepadIndex = 0;
   // @ts-ignore
   users = getFoundryUsers().filter(u =>!u.isGM).map((user) => {
-    console.log(user);
     return new CUser(user.id, gamepadIndex++, new CInput())
     }
   )

@@ -11,7 +11,7 @@ console.log(`Build destination: ${rootDir}`)
 
 // Delete a directory and all its contents
 //await rm(rootDir, { recursive: true, force: true });
-const watcher = watch(import.meta.dir,{ recursive: true });
+const watcher = watch(import.meta.dir + '/src',{ recursive: true });
 
 for await (const event of watcher) {
     console.log(`Detected ${event.eventType} in ${event.filename}`);
@@ -21,7 +21,7 @@ for await (const event of watcher) {
 async function build() {
     await Bun.build({
         entrypoints: ['./src/main.ts'],
-        outdir: rootDir + '/src',
+        outdir: rootDir + '.',
         plugins: [CopyBunPlugin({
             patterns: [
                 {

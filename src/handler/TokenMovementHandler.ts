@@ -2,13 +2,12 @@ import { Vector } from '../Vector.ts';
 import { BaseHandler } from './BaseHandler.ts';
 import { CUser } from '../CUser.ts';
 
-
 export class TokenMovementHandler extends BaseHandler {
 
   private linkRotation: boolean = true;
   private snap: number = 15;
   private skipped: number = 0;
-  private maxFrame: number = 24;
+  private maxFrame: number = 16;
 
   handle(user:CUser) {
     if(this.skipped <= 0){
@@ -28,14 +27,18 @@ export class TokenMovementHandler extends BaseHandler {
 
   private move(token:Token, vector:Vector) {
     if(vector.isZero()) return;
-    vector.normalize()
-    let newX = token.x + token.w * vector.x
-    let newY = token.y + token.h * vector.y
-    const newPoint = token.getSnappedPosition(new PIXI.Point(newX, newY))
-    if (newPoint &&
-      !token.checkCollision(newPoint, { origin: token.center, type: "move", mode: "any" })) {
-      token.document.update(newPoint)
-      }
+    const roundX = Math.round(vector.x)
+    const roundY = Math.round(vector.y)
+    const toCenterPointX =  token.center.x + token.w * roundX
+    const toCenterPointY =  token.center.y + token.h * roundY
+    const toCenterPoint = new PIXI.Point(toCenterPointX, toCenterPointY)
+    const toSnapPoint = token.getSnappedPosition(toCenterPoint)
+    if (toSnapPoint && !token.checkCollision(toCenterPoint, { origin: token.center, type: "move", mode: "any" })) {
+      token.document.update(toSnapPoint)
+    }
+    //Debug pings
+    //canvas.ping(token.center, {name: "from"})
+    //canvas.ping(toCenterPoint, {color: "#FF0000" ,name: "to"})
   }
 
   private rotate(token:Token, vector:Vector) {
