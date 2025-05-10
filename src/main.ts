@@ -52,8 +52,10 @@ function handleInput() {
 
 function createUsers() {
   let gamepadIndex = 0;
-  users = getFoundryUsers().map((user) => {
-      return new CUser(user.id, gamepadIndex++, new CInput())
+  // @ts-ignore
+  users = getFoundryUsers().filter(u =>!u.isGM).map((user) => {
+    console.log(user);
+    return new CUser(user.id, gamepadIndex++, new CInput())
     }
   )
 }

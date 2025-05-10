@@ -5,7 +5,7 @@ let rootDir = ""
 if (process.platform === "darwin") {
     rootDir = `${process.env.HOME}/Library/Application Support/FoundryVTT/Data/modules/foundry-controller`;
 }else{
-    rootDir = `${process.env.USERPROFILE}\\iCloudDrive\\FoundryVTT\\Data\\modules\\foundry-controller`;
+    rootDir = `${process.env.USERPROFILE}\\AppData\\Local\\FoundryVTT\\Data\\modules\\foundry-controller`;
 }
 console.log(`Build destination: ${rootDir}`)
 

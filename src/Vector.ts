@@ -8,7 +8,7 @@ export class Vector {
   }
 
   getMagnitude(): number {
-    return Math.sqrt((this.x * this.x) + (this.y * this.y));
+    return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
   getDegree():number{
@@ -16,6 +16,7 @@ export class Vector {
   }
 
   normalize() {
+    if (this.isZero()) return;
     let magnitude = this.getMagnitude();
     this.x /= magnitude;
     this.y /= magnitude;
