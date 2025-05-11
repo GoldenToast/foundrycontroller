@@ -1,27 +1,24 @@
 import CopyBunPlugin from "@takinabradley/copybunplugin";
 import { watch } from "fs/promises";
 
-let rootDir = ""
-if (process.platform === "darwin") {
-    rootDir = `${process.env.HOME}/Library/Application Support/FoundryVTT/Data/modules/foundry-controller`;
-}else{
-    rootDir = `${process.env.USERPROFILE}\\AppData\\Local\\FoundryVTT\\Data\\modules\\foundry-controller`;
-}
-console.log(`Build destination: ${rootDir}`)
+let rootDir = './dist'
 
 // Delete a directory and all its contents
 //await rm(rootDir, { recursive: true, force: true });
-const watcher = watch(import.meta.dir + '/src',{ recursive: true });
-
-for await (const event of watcher) {
-    console.log(`Detected ${event.eventType} in ${event.filename}`);
-    build().then(r => console.log("Build Done"))
+if (process.env.WATCH) {
+    const watcher = watch(import.meta.dir + '/src',{ recursive: true });
+    for await (const event of watcher) {
+        console.log(`Detected ${event.eventType} in ${event.filename}`);
+        build();
+    }
+}else {
+    build()
 }
 
-async function build() {
-    await Bun.build({
+function build() {
+    Bun.build({
         entrypoints: ['./src/main.ts'],
-        outdir: rootDir + '.',
+        outdir: rootDir,
         plugins: [CopyBunPlugin({
             patterns: [
                 {
@@ -31,5 +28,11 @@ async function build() {
                 }
             ]
         })]
+    }).then(r => {
+        if (!r.success) {
+            console.error('Build failed:', r.logs);
+            process.exit(1);
+        }
+        console.log("Build Done")
     })
 }
