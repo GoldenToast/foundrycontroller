@@ -14,5 +14,6 @@
   "compatibility": {
     "minimum": "12",
     "verified": "12"
-  }
+  },
+  "manifest": "https://github.com/GoldenToast/foundry-controller/module.json"
 }
