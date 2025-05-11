@@ -20,5 +20,5 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './module.json'
+          artifacts: './dist/module.json'
           tag: latest
