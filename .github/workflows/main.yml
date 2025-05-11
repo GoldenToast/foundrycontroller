@@ -20,5 +20,5 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './dist/module.json'
+          artifacts: './foundry-controller.zip,./dist/module.json'
           tag: latest
