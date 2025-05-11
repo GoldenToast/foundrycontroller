@@ -29,7 +29,7 @@ jobs:
         id: sub_manifest_link_version
         uses: cschleiden/replace-tokens@v1
         with:
-          files: 'module.json'
+          files: './dist/module.json'
         env:
           URL: ${{ env.project_url }}
           MANIFEST: ${{ env.latest_manifest_url }}
