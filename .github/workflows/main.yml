@@ -36,7 +36,7 @@ jobs:
           MANIFEST: ${{ env.latest_manifest_url }}
           DOWNLOAD: ${{ env.release_module_url }}
 
-      - run: zip -r ./foundry-controller.zip ./dist/module.json ./dist/main.js
+      - run: zip -r ./module.zip ./dist/module.json ./dist/main.js
       - name: Create Release
         id: create_latest_release
         uses: ncipollo/release-action@v1
@@ -46,5 +46,5 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './foundry-controller.zip,./dist/module.json'
+          artifacts: './module.zip,./dist/module.json'
           tag: latest
