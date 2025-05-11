@@ -10,7 +10,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bun run build
-      - run: zip -r ./foundry-controller.zip .dist/module.json .dist/main.ts
+      - run: zip -r ./foundry-controller.zip ./dist/module.json ./dist/main.js
       - name: Create Release
         id: create_latest_release
         uses: ncipollo/release-action@v1
