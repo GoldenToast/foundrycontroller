@@ -4,14 +4,15 @@ import { CUser } from '../CUser.ts';
 
 export class TokenMovementHandler extends BaseHandler {
 
-  private linkRotation: boolean = true;
+  private linkRotation: boolean = false;
   private snap: number = 15;
+
   private skipped: number = 0;
   private maxFrame: number = 16;
 
   handle(user:CUser) {
-    if(this.skipped <= 0){
-      this.skipped += this.maxFrame
+    if(this.skipped++ > this.maxFrame){
+      this.skipped = 0
       const token = user.getSelectedToken()
       const input = user.input
       this.move(token, new Vector(input.axes[0], input.axes[1]))
@@ -21,29 +22,28 @@ export class TokenMovementHandler extends BaseHandler {
         this.rotate(token, new Vector(input.axes[2], input.axes[3]))
       }
     }
-    this.skipped = (this.skipped > 0) ? this.skipped - 1 : 0 ;
     super.handle(user)
   }
 
-  private move(token:Token, vector:Vector) {
-    if(vector.isZero()) return;
-    const roundX = Math.round(vector.x)
-    const roundY = Math.round(vector.y)
-    const toCenterPointX =  token.center.x + token.w * roundX
-    const toCenterPointY =  token.center.y + token.h * roundY
+  private async move(token: Token, vector: Vector) {
+    if (vector.isZero()) {return;}
+    const vectorX = Math.round(vector.x)
+    const vectorY = Math.round(vector.y)
+    const fromTokenCenter = new PIXI.Point(token.center.x, token.center.y)
+    const toCenterPointX = fromTokenCenter.x + token.w * vectorX
+    const toCenterPointY = fromTokenCenter.y + token.h * vectorY
     const toCenterPoint = new PIXI.Point(toCenterPointX, toCenterPointY)
     const toSnapPoint = token.getSnappedPosition(toCenterPoint)
-    if (toSnapPoint && !token.checkCollision(toCenterPoint, { origin: token.center, type: "move", mode: "any" })) {
+    //const collisionResult = CONFIG.Canvas.polygonBackends["move"].testCollision(fromTokenCenter,, { mode: "any", type: "move" } ) //Remove if same function
+    const collisionResult = token.checkCollision(toCenterPoint, {origin: fromTokenCenter, type: "move", mode: "any"})
+    if (toSnapPoint && !collisionResult) {
       token.document.update(toSnapPoint)
     }
-    //Debug pings
-    //canvas.ping(token.center, {name: "from"})
-    //canvas.ping(toCenterPoint, {color: "#FF0000" ,name: "to"})
   }
 
-  private rotate(token:Token, vector:Vector) {
+  private async rotate(token:Token, vector:Vector) {
     if(!vector.isZero()){
-      token.rotate(vector.getDegree(),this.snap);
+      token.rotate(vector.getDegree(), this.snap);
     }
   }
 }

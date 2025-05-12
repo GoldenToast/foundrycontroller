@@ -9,11 +9,7 @@ import { TokenSelectionHandler } from './handler/TokenSelectionHandler.js';
 CONFIG.debug.hooks = false;
 
 export const NAMESPACE = "foundry-controller"
-
-//User handler chain
-const tokenMovementHandler = new TokenMovementHandler();
-const userPositionHandler = new UserPositionHandler(tokenMovementHandler);
-const tokenSelectionHandler = new TokenSelectionHandler(userPositionHandler);
+const filterNames = ["Gamemaster","VTT"]
 
 //Internal user array
 let users:CUser[] = [];
@@ -22,7 +18,7 @@ Hooks.on("canvasInit", async function () {
   addUserSettingsUI()
   createUsers()
   updateUser()
-  requestAnimationFrame(handleInput);
+  handleInput()
 });
 
 Hooks.on("drawToken", function(token:Token) {
@@ -44,7 +40,7 @@ function handleInput() {
     if(gp && user.hasToken()){
       user.input.axes = gp.axes
       user.input.buttons = gp.buttons;
-      tokenSelectionHandler.handle(user);
+      user.update()
     }
   })
   requestAnimationFrame(handleInput);
@@ -53,8 +49,11 @@ function handleInput() {
 function createUsers() {
   let gamepadIndex = 0;
   // @ts-ignore
-  users = getFoundryUsers().filter(u =>!u.isGM).map((user) => {
-    return new CUser(user.id, gamepadIndex++, new CInput())
+  users = getFoundryUsers().map((user) => {
+    const tokenMovementHandler = new TokenMovementHandler();
+    const userPositionHandler = new UserPositionHandler(tokenMovementHandler);
+    const tokenSelectionHandler = new TokenSelectionHandler(userPositionHandler);
+    return new CUser(user.id, gamepadIndex++, new CInput(), tokenSelectionHandler)
     }
   )
 }
@@ -98,8 +97,10 @@ function addUserSettingsUI(){
 }
 
 function getFoundryUsers(): Users{
-  const users =  game.users;
+  // @ts-ignore
+  const users = game.users?.filter(u => !filterNames.includes(u.name));
   if(users){
+    // @ts-ignore
     return users;
   }
   throw new Error("No users found");
